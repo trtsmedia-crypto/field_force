@@ -1,0 +1,3 @@
+This folder is already configured with your live API and Maps key.
+To change either later: edit config.js, then drag this whole folder onto
+app.netlify.com/drop again. No rebuild needed.

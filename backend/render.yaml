@@ -1,0 +1,39 @@
+# Render Blueprint — lets Render create both the API and the database
+# together from one file. Optional: you can also set these up by hand in
+# the dashboard, this just saves clicking.
+services:
+  - type: web
+    name: fieldforce-api
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: fieldforce-db
+          property: connectionString
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: ACCESS_TOKEN_TTL
+        value: 15m
+      - key: REFRESH_TOKEN_TTL_DAYS
+        value: 30
+      - key: CORS_ORIGINS
+        value: http://localhost:5173
+      - key: UPLOAD_DIR
+        value: /var/data/uploads
+    disk:
+      name: uploads
+      mountPath: /var/data
+      sizeGB: 1
+
+databases:
+  - name: fieldforce-db
+    plan: free
